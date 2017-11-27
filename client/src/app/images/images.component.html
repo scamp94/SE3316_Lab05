@@ -1,0 +1,17 @@
+<p>
+  Search for Images
+</p>
+<div ng-controller = 'imageCtrl' ng-app = "imageApp">
+  <form >
+    <input  name = 'searchForm' type = 'text' id = 'imageSearch' [(ngModel)] = searchCriteria>
+    <button id = 'search' (click) = "searchImages()">Search</button>
+  </form>
+</div>
+<div>
+  <ul class = 'imageList'>
+    <li *ngFor = "let image of images">
+      <img src = {{image}}>
+    </li>
+  </ul>
+</div>
+
