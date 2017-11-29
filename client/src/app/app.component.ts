@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {CookieService} from 'ngx-cookie-service';
 
 
 @Component({
@@ -7,6 +8,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
   template: "<router-outlet></router-outlet>"
 })
-export class AppComponent {
-  title = 'NASA Images';
+export class AppComponent implements OnInit {
+  cookieValue = 'UNKNOWN';
+
+  constructor(private cookieService: CookieService){}
+
+  ngOnInit(){
+    this.cookieService.set('verified', 'false');
+    this.cookieValue = this.cookieService.get('verified');
+  }
+
 }

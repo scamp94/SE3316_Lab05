@@ -1,6 +1,5 @@
 import { Component, OnInit, NgModule} from '@angular/core';
 import {ImagesService} from '../images.service'
-import {HttpClientJsonpModule} from '@angular/common/http';
 declare var angular: any;
 
 @Component({

@@ -204,14 +204,24 @@ router.get('/search/', function(req, res){
 });
 
 //routing for database
+router.get('/collections', function(req,res){
+
+});
 
 //check login credentials
 router.get('/login?:query', function (req, res){
-   users.find({"email": req.query.email, "password": req.query.password}, function(err, userList){
-       if(err)
-           res.send(err);
-       res.send({message: "Successful login!"});
-   })
+
+    if(req.header('authentication') == 'false') {
+        users.find({"email": req.query.email, "password": req.query.password}, function (err, userList) {
+            if (err)
+                res.send(err);
+            res.send(userList);
+        })
+    }else{
+        res.send({message: 'You are already logged in!'});
+    }
+
+
 });
 
 //page routing

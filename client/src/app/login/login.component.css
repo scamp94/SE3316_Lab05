@@ -44,3 +44,9 @@
   width: 50%;
 }
 
+#loginMsg{
+  text-align: center;
+  color: rebeccapurple;
+  font-size: 20px;
+}
+
