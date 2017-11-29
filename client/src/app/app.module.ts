@@ -7,18 +7,24 @@ import { AppComponent } from './app.component';
 import { ImagesComponent } from './images/images.component';
 import { LoginComponent } from './login/login.component';
 import {FormsModule} from '@angular/forms';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import {RoutingModule} from './routing/routing.module';
+import { CollectionComponent } from './collection/collection.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ImagesComponent,
-    LoginComponent
+    LoginComponent,
+    SignUpComponent,
+    CollectionComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    RoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

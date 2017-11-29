@@ -1,9 +1,21 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
+import {Http} from '@angular/http';
+
+@NgModule({
+  imports: [
+    Http
+  ]
+})
 
 @Injectable()
 export class LoginService {
 
-  constructor() { }
+  constructor(private http: Http) { }
 
-  login() {}
+  verify(email, password, callBackFunction){
+    this.http.get('/api/login?email='+email+'&password='+password)
+      .subscribe(response => {
+        callBackFunction(response.json())
+      });
+  }
 }

@@ -15,7 +15,7 @@ export class ImagesService {
   constructor( private http: Http) {
   }
   searchImages(key, callBackFunction) {
-     this.http.get('/api/'+key)
+     this.http.get('/api/search/'+key)
        .subscribe(response => {
          callBackFunction(response.json())
        });

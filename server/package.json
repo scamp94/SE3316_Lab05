@@ -6,8 +6,10 @@
   "scripts": {},
   "private": false,
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "core-js": "^2.4.1",
+    "email-verification": "^0.4.6",
     "express": "^4.16.2",
     "http-proxy": "^1.16.2",
     "mongoose": "^4.13.4",

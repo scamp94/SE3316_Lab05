@@ -1,9 +1,22 @@
-<p>
-  Please Enter Username and Password
-</p>
-<form>
-  <input type = 'text' id = 'username' placeholder="username">
-  <br><br>
-  <input type = 'text' id = 'password' placeholder="password">
-  <input type = 'submit' id = 'login' value = "Login" (click) = "login();">
-</form>
+<div style="text-align:center">
+  <div class = 'navBar'>
+    <a class ='active' href = '/search'>Search</a>
+    <a href = '/login'>Login</a>
+    <a href = '/signUp'>Create Account</a>
+    <a href  = '/collections'> Collections</a>
+  </div>
+
+  <h1>
+    Please Enter Username and Password
+  </h1>
+</div>
+<br><br>
+<div class = 'info'>
+  <form class = 'userForm'>
+    <input type = 'text' id = 'username' placeholder="username" name = 'username' [(ngModel)] = email>
+    <br><br>
+    <input type = 'text' id = 'password' placeholder="password" name = 'password' [(ngModel)] = password>
+    <br><br>
+    <input type = 'submit' id = 'login' value = "Login" (click) = "login();">
+  </form>
+</div>

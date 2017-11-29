@@ -18,7 +18,6 @@ export class ImagesComponent implements OnInit {
 
   }
 
-
   ngOnInit() {
     this.searchImages();
   }
@@ -32,13 +31,11 @@ export class ImagesComponent implements OnInit {
     this.response = JSON.parse(this.response.body);
     var collection = this.response.collection.items;
 
-    console.log(collection);
     this.imagesService.clearImages();
 
     for (var i = 0; i < collection.length; i++ ){
      this.imagesService.loadImages(collection[i].links[0].href);
     }
-
     this.images = this.imagesService.getImages();
   }
 }

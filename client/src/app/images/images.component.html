@@ -1,7 +1,20 @@
+<div style="text-align:center">
+  <div class = 'navBar'>
+    <a class ='active' href = '/search'>Search</a>
+    <a href = '/login'>Login</a>
+    <a href = '/signUp'>Create Account</a>
+    <a href  = '/collections'> Collections</a>
+  </div>
+
+  <h1>
+    Welcome to NASA Image Search!
+  </h1>
+</div>
+<br><br>
 <p>
   Search for Images
 </p>
-<div ng-controller = 'imageCtrl' ng-app = "imageApp">
+<div>
   <form >
     <input  name = 'searchForm' type = 'text' id = 'imageSearch' [(ngModel)] = searchCriteria>
     <button id = 'search' (click) = "searchImages()">Search</button>
