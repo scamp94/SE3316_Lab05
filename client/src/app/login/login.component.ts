@@ -31,8 +31,16 @@ export class LoginComponent implements OnInit {
       this.loginMsg = JSON.parse(JSON.stringify(res)).message;
     }
     else{
-      this.cookieService.set('verified', this.email);
+      //set cookie expiration to 30 minutes
+      let date = new Date();
+      date.setTime(date.getTime()+(30*60*1000));
+
+      this.cookieService.set('verified', this.email, 0.1);
       this.loginMsg = 'You are now logged in!'
     }
+  }
+
+  signOut(){
+    this.cookieService.set('verified', 'false');
   }
 }

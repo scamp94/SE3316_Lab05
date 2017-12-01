@@ -1,19 +1,21 @@
 import { Component, OnInit, NgModule} from '@angular/core';
 import {ImagesService} from '../images.service'
+import {CookieService} from 'ngx-cookie-service';
+
 declare var angular: any;
 
 @Component({
   selector: 'app-images',
   templateUrl: './images.component.html',
   styleUrls: ['./images.component.css'],
-  providers: [ImagesService]
+  providers: [ImagesService, CookieService]
 })
 export class ImagesComponent implements OnInit {
   searchCriteria = '';
   response;
   images = [];
 
-  constructor(private imagesService: ImagesService) {
+  constructor(private imagesService: ImagesService, private cookieService: CookieService) {
 
   }
 
@@ -36,5 +38,9 @@ export class ImagesComponent implements OnInit {
      this.imagesService.loadImages(collection[i].links[0].href);
     }
     this.images = this.imagesService.getImages();
+  }
+
+  signOut(){
+    this.cookieService.set('verified', 'false');
   }
 }

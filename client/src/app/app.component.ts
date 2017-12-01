@@ -6,7 +6,8 @@ import {CookieService} from 'ngx-cookie-service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  template: "<router-outlet></router-outlet>"
+  template: "<router-outlet></router-outlet>",
+  providers: [CookieService]
 })
 export class AppComponent implements OnInit {
   cookieValue = 'UNKNOWN';
@@ -14,8 +15,12 @@ export class AppComponent implements OnInit {
   constructor(private cookieService: CookieService){}
 
   ngOnInit(){
+    //this.cookieService.set('verified', 'false', 15);
+    //this.cookieValue = this.cookieService.get('verified');
+  }
+
+  signOut(){
     this.cookieService.set('verified', 'false');
-    this.cookieValue = this.cookieService.get('verified');
   }
 
 }
