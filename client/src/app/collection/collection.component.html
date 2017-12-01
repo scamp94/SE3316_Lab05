@@ -1,11 +1,23 @@
+<script src = "https://codeorigin.jquery.com/jquery-1.10.2.js" type = "text/javascript"></script>
 <div class = 'navBar'>
   <a class ='active' href = '/search'>Search</a>
-  <a href = '/login'>Login</a>
-  <a href = '/signUp'>Create Account</a>
   <a href  = '/collections'> Collections</a>
+  <a href = '/login'>Sign In</a>
+  <a href = '/signUp'>Create Account</a>
   <a (click) = signOut()>Sign Out</a>
 </div>
 <div class = createCollection>
   <br><br>
-  <input type = 'button' id = 'createCollection' value = 'Create a Collection' (click)="createCollection()">
+  <input type = 'button' id = 'createCollection' value = 'Create a Collection' (click)="showCreateCollection()">
+  <p id = 'errorMsg'>{{errorMsg}}</p>
+  <div id = 'newCollection' [hidden] = '!verified'>
+    <input type = 'text' id = 'collectionName' placeholder="Collection Name" title = 'name' [(ngModel)] = 'collectionName'>
+    <br><br>
+    <select title = 'security'  [(ngModel)] = 'privacy'>
+      <option value = '' disabled selected>Select Privacy Level</option>
+      <option value = 'private'>Private</option>
+      <option value = 'public'>Public</option>
+    </select>
+    <input type = 'submit' (click) = createCollection() value = 'Create'>
+  </div>
 </div>

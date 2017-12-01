@@ -25,9 +25,7 @@ export class LoginComponent implements OnInit {
   }
 
   callBackFunction(res : string){
-    if(res == ''){
-      this.loginMsg = "Incorrect username or password, please try again";
-    }else if(JSON.parse(JSON.stringify(res)).message){
+     if(JSON.parse(JSON.stringify(res)).message){
       this.loginMsg = JSON.parse(JSON.stringify(res)).message;
     }
     else{
@@ -36,7 +34,10 @@ export class LoginComponent implements OnInit {
       date.setTime(date.getTime()+(30*60*1000));
 
       this.cookieService.set('verified', this.email, 0.1);
-      this.loginMsg = 'You are now logged in!'
+      this.loginMsg = 'You are now signed in!'
+
+      this.email = '';
+      this.password = '';
     }
   }
 

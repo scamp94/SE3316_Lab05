@@ -4,11 +4,15 @@ var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
 var mongoose = require('mongoose');
-var users = require('./models/user');
-var temporary_users = require('./models/tempUserModel');
+
 var nev = require('email-verification')(mongoose);
 var bcrypt = require ('bcrypt');
 
+//database models
+var users = require('./models/user');
+var collections = require('./models/collection');
+
+//connect to database
 mongoose.connect("mongodb://scamp94:database1@ds113736.mlab.com:13736/lab05-nasa", {useMongoClient: true}, function(err, db) {
     if (err)
         console.log('Connection error');
@@ -34,8 +38,6 @@ router.use(function(req, res, next) {
 });
 
 //email verification
-// sync version of hashing function
-
 var myHasher = function(password, tempUserData, insertTempUser, callback) {
     var hash = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
     return insertTempUser(hash, tempUserData, callback);
@@ -50,6 +52,8 @@ myHasher = function(password, tempUserData, insertTempUser, callback) {
     });
 };
 
+
+
 // NEV configuration =====================
 nev.configure({
     persistentUserModel: users,
@@ -63,9 +67,8 @@ nev.configure({
             pass: 'networking'
         }
     },
-
     hashingFunction: myHasher,
-    passwordFieldName: 'pw'
+    passwordFieldName: 'password'
 }, function(err, options) {
     if (err) {
         console.log(err);
@@ -89,15 +92,18 @@ router.post('/signUp', function(req, res) {
     var email = req.body.email;
     var password = req.body.password;
 
+    //hash password
+
+
     // register button was clicked
     if (req.body.type === 'register') {
 
-        var password = req.body.password;
         var newUser = new users({
             email: email,
             password: password,
             collections: []
         });
+
 
         nev.createTempUser(newUser, function(err, existingPersistentUser, newTempUser) {
             if (err) {
@@ -182,7 +188,6 @@ router.get('/email-verification/:URL', function(req, res) {
 });
 
 
-//for logging in
 
 //routing for nasa
 router.get('/search/:key', function(req, res) {
@@ -208,17 +213,28 @@ router.get('/collections', function(req,res){
 
 });
 
+router.post('/createCollection', function(req, res){
+    
+});
+
 //check login credentials
 router.get('/login?:query', function (req, res){
 
-    if(req.header('authentication') == 'false') {
-        users.find({"email": req.query.email, "password": req.query.password}, function (err, userList) {
+    if(req.header('authentication') === 'false') {
+        users.find({"email": req.query.email}, function (err, userList) {
             if (err)
                 res.send(err);
-            res.send(userList);
+
+            //check password
+            bcrypt.compare(req.query.password, userList[0].password, function(err, result){
+            if(result === true)
+                res.send(userList);
+            else
+                res.send({message: 'Incorrect Username or Password'});
+            });
         })
     }else{
-        res.send({message: 'You are already logged in!'});
+        res.send({message: 'You are already signed in!'});
     }
 
 

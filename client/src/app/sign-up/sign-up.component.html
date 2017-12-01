@@ -1,9 +1,10 @@
 <div style="text-align:center">
   <div class = 'navBar'>
     <a class ='active' href = '/search'>Search</a>
-    <a href = '/login'>Login</a>
-    <a href = '/signUp'>Create Account</a>
     <a href  = '/collections'> Collections</a>
+    <a href = '/login'>Sign In</a>
+    <a href = '/signUp'>Create Account</a>
+    <a (click) = signOut()>Sign Out</a>
   </div>
 
   <h1>
@@ -13,9 +14,9 @@
 <div class = 'info'>
   <br><br>
   <form id = 'newUserForm'>
-    <input type = 'text' id = 'username' name = 'username' placeholder="username" [(ngModel)] = username>
+    <input type = 'text' autocomplete="off" id = 'username' name = 'username' placeholder="username" [(ngModel)] = username>
     <br><br>
-    <input type = 'text' id = 'password' name = 'password' placeholder="password"  [(ngModel)] = password>
+    <input type = 'password' autocomplete="off" id = 'password' name = 'password' placeholder="password"  [(ngModel)] = password>
     <br><br>
     <input type = 'submit' id = 'create' value = "Create" (click) = "createUser();">
   </form>

@@ -6,7 +6,8 @@ var CollectionSchema = new Schema({
     privacy: Boolean,
     owner: String,
     image: [],
-    ID: Number
+    Name: String,
+    rating: Number
 });
 
 module.exports = mongoose.model('Collection', CollectionSchema);

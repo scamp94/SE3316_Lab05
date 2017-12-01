@@ -30,3 +30,28 @@ ul{
   color: white;
 }
 
+#search{
+  text-align: center;
+}
+
+#searchForm{
+  margin: auto;
+}
+
+#imageSearch{
+  width: 50%;
+  height: 25px;
+
+}
+
+#searchBtn{
+  width: 50%;
+  font-size: 20px;
+  color: darkgreen;
+}
+
+#searchTitle{
+  text-align: center;
+  color: rebeccapurple;
+  font-size: 30px;
+}

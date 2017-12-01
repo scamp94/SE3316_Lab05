@@ -18,7 +18,7 @@ import {CookieService} from 'ngx-cookie-service';
     ImagesComponent,
     LoginComponent,
     SignUpComponent,
-    CollectionComponent,
+    CollectionComponent
   ],
   imports: [
     BrowserModule,

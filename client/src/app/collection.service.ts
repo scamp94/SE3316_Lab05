@@ -1,8 +1,30 @@
-import { Injectable } from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
+import {Headers, Http} from '@angular/http';
+import {CookieService} from 'ngx-cookie-service';
+
 
 @Injectable()
 export class CollectionService {
 
-  constructor() { }
+  errorMsg: String;
+
+  constructor(private http :Http, private cookieService : CookieService ) {
+
+  }
+
+  createNewCollection(name, privacy, callBackFunction){
+    fetch('/api/createCollection',{
+      method: 'post',
+      headers: {'Content-type':'application/json'},
+      body: JSON.stringify({name: name,  privacy: privacy, owner: this.cookieService.get('verified')})
+
+    }).then(function(response){
+      console.log(response);
+      callBackFunction(response['msg']);
+
+    }).catch(function(){
+      console.log('error');
+    })
+  }
 
 }

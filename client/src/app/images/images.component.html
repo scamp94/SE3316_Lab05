@@ -1,9 +1,10 @@
 <div style="text-align:center">
   <div class = 'navBar'>
     <a class ='active' href = '/search'>Search</a>
-    <a href = '/login'>Login</a>
-    <a href = '/signUp'>Create Account</a>
     <a href  = '/collections'> Collections</a>
+    <a href = '/login'>Sign In</a>
+    <a href = '/signUp'>Create Account</a>
+    <a (click) = signOut()>Sign Out</a>
   </div>
 
   <h1>
@@ -11,20 +12,23 @@
   </h1>
 </div>
 <br><br>
-<p>
-  Search for Images
-</p>
-<div>
-  <form >
-    <input  name = 'searchForm' type = 'text' id = 'imageSearch' [(ngModel)] = searchCriteria>
-    <button id = 'search' (click) = "searchImages()">Search</button>
+
+<div id = 'search'>
+  <p id = 'searchTitle'>
+    Search for Images
+  </p>
+  <form id = 'searchForm'>
+    <input id = 'imageSearch' name = 'searchInput' type = 'text'  [(ngModel)] = searchCriteria>
+    <br><br>
+    <button id = 'searchBtn' (click) = "searchImages()">Search</button>
   </form>
-</div>
-<div>
-  <ul class = 'imageList'>
-    <li *ngFor = "let image of images">
-      <img src = {{image}}>
-    </li>
-  </ul>
+
+  <div>
+    <ul class = 'imageList'>
+      <li *ngFor = "let image of images">
+        <img src = {{image}}>
+      </li>
+    </ul>
+  </div>
 </div>
 

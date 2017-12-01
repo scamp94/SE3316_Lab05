@@ -1,9 +1,11 @@
+
 <div style="text-align:center">
   <div class = 'navBar'>
     <a class ='active' href = '/search'>Search</a>
-    <a href = '/login'>Login</a>
-    <a href = '/signUp'>Create Account</a>
     <a href  = '/collections'> Collections</a>
+    <a href = '/login'>Sign In</a>
+    <a href = '/signUp'>Create Account</a>
+    <a (click) = signOut()>Sign Out</a>
   </div>
 
   <h1>
@@ -15,9 +17,9 @@
   <form class = 'userForm'>
     <input type = 'text' id = 'username' placeholder="username" name = 'username' [(ngModel)] = email>
     <br><br>
-    <input type = 'text' id = 'password' placeholder="password" name = 'password' [(ngModel)] = password>
+    <input type = 'password' autocomplete="off" id = 'password' placeholder="password" name = 'password' [(ngModel)] = password>
     <br><br>
-    <input type = 'submit' id = 'login' value = "Login" (click) = "login();">
+    <input type = 'submit' id = 'login' value = "Sign In" (click) = "login();">
   </form>
 </div>
 <div id = 'loginMsg'>
