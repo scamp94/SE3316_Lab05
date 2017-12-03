@@ -18,7 +18,7 @@ import {CookieService} from 'ngx-cookie-service';
     ImagesComponent,
     LoginComponent,
     SignUpComponent,
-    CollectionComponent
+    CollectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,7 +27,7 @@ import {CookieService} from 'ngx-cookie-service';
     RoutingModule,
   ],
   providers: [CookieService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 
 export class AppModule{}

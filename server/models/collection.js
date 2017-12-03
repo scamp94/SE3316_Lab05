@@ -6,7 +6,8 @@ var CollectionSchema = new Schema({
     privacy: Boolean,
     owner: String,
     image: [],
-    Name: String,
+    name: String,
+    description: String,
     rating: Number
 });
 

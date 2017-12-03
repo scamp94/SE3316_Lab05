@@ -1,5 +1,6 @@
 import { Injectable, NgModule } from '@angular/core';
-import {Http} from '@angular/http';
+import {Headers, Http, RequestOptions} from '@angular/http';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   imports: [
@@ -12,7 +13,7 @@ import {Http} from '@angular/http';
 export class ImagesService {
   images = [];
 
-  constructor( private http: Http) {
+  constructor( private http: Http, private cookieService: CookieService) {
   }
   searchImages(key, callBackFunction) {
      this.http.get('/api/search/'+key)
@@ -31,6 +32,18 @@ export class ImagesService {
 
   clearImages(){
     this.images = [];
+  }
+
+  getCollections(callBackFunction){
+    let headers = new Headers();
+    headers.append('authentication', this.cookieService.get('verified'));
+
+    let options = new RequestOptions({ headers: headers});
+
+    this.http.get('/api/collections', options)
+      .subscribe(response => {
+        callBackFunction(response.json())
+      });
   }
 
 }

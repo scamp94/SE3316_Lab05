@@ -13,11 +13,18 @@
   <div id = 'newCollection' [hidden] = '!verified'>
     <input type = 'text' id = 'collectionName' placeholder="Collection Name" title = 'name' [(ngModel)] = 'collectionName'>
     <br><br>
-    <select title = 'security'  [(ngModel)] = 'privacy'>
+    <input type = 'text' id = 'collectionDescription' placeholder = 'Enter a Brief Description' title = 'descr' [(ngModel)] ='collectionDescription'>
+    <br><br>
+    <select title = 'security'  [(ngModel)] = 'privVal'>
       <option value = '' disabled selected>Select Privacy Level</option>
       <option value = 'private'>Private</option>
       <option value = 'public'>Public</option>
     </select>
     <input type = 'submit' (click) = createCollection() value = 'Create'>
   </div>
+</div>
+<div id = 'collectionList'>
+  <ul>
+
+  </ul>
 </div>

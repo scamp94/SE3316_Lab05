@@ -12,15 +12,15 @@ export class CollectionService {
 
   }
 
-  createNewCollection(name, privacy, callBackFunction){
+  createNewCollection(name, privacy, description, callBackFunction){
     fetch('/api/createCollection',{
       method: 'post',
       headers: {'Content-type':'application/json'},
-      body: JSON.stringify({name: name,  privacy: privacy, owner: this.cookieService.get('verified')})
+      body: JSON.stringify({name: name,  privacy: privacy,description: description, owner: this.cookieService.get('verified')})
 
     }).then(function(response){
       console.log(response);
-      callBackFunction(response['msg']);
+      callBackFunction(response.json());
 
     }).catch(function(){
       console.log('error');

@@ -14,6 +14,9 @@ export class ImagesComponent implements OnInit {
   searchCriteria = '';
   response;
   images = [];
+  verified;
+  collections = [];
+  selected;
 
   constructor(private imagesService: ImagesService, private cookieService: CookieService) {
 
@@ -21,6 +24,14 @@ export class ImagesComponent implements OnInit {
 
   ngOnInit() {
     this.searchImages();
+
+   let check = this.cookieService.get('verified');
+
+   if(check === 'false')
+     this.verified = false;
+   else
+     this.verified = true;
+
   }
 
   searchImages() {
@@ -42,5 +53,17 @@ export class ImagesComponent implements OnInit {
 
   signOut(){
     this.cookieService.set('verified', 'false');
+    this.verified = false;
+    window.location.reload();
+  }
+
+  getCollections(img){
+    this.selected = img;
+    this.imagesService.getCollections(this.showOptions);
+  }
+
+  showOptions(res: string) {
+    console.log(res);
+    document.getElementById('addToCollection').style.display = 'block';
   }
 }

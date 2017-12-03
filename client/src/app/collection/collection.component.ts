@@ -12,9 +12,10 @@ import {CollectionService} from '../collection.service';
 export class CollectionComponent implements OnInit {
   errorMsg:String;
   collectionName = '';
-  privacy = '';
-  verified: Boolean;
-
+  collectionDescription = ''
+  privacy = false;
+  verified: boolean;
+  privVal = '';
 
   constructor(private cookieService : CookieService, private collectionService: CollectionService) { }
 
@@ -31,15 +32,23 @@ export class CollectionComponent implements OnInit {
   }
 
   createCollection(){
-    this.collectionService.createNewCollection(this.collectionName, this.privacy, this.callBackFunction);
+
+    if(this.privVal === 'private')
+      this.privacy = true;
+
+    this.collectionService.createNewCollection(this.collectionName, this.privacy, this.collectionDescription, this.callBackFunction);
+
+    //reset privacy value
+    this.privacy = false;
   }
 
-  callBackFunction(){
+  callBackFunction(res: string){
 
   }
 
   signOut(){
     this.cookieService.set('verified', 'false');
+    window.location.reload();
     this.verified = false;
   }
 

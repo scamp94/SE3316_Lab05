@@ -10,7 +10,7 @@ var bcrypt = require ('bcrypt');
 
 //database models
 var users = require('./models/user');
-var collections = require('./models/collection');
+var Collection = require('./models/collection');
 
 //connect to database
 mongoose.connect("mongodb://scamp94:database1@ds113736.mlab.com:13736/lab05-nasa", {useMongoClient: true}, function(err, db) {
@@ -210,11 +210,23 @@ router.get('/search/', function(req, res){
 
 //routing for database
 router.get('/collections', function(req,res){
+    Collection.find()
 
 });
 
 router.post('/createCollection', function(req, res){
-    
+    var collection = new Collection();
+    collection.name = req.body.name;
+    collection.privacy = req.body.privacy;
+    collection.owner = req.body.owner;
+    collection.description = req.body.description;
+
+    collection.save(function(err){
+        if(err)
+            res.send(err);
+
+        res.json({message: 'Collection created!'});
+    })
 });
 
 //check login credentials

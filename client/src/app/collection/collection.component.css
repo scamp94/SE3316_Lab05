@@ -30,3 +30,7 @@
 .createCollection{
   text-align: center;
 }
+
+#collectionDescription{
+  width: 50%;
+}

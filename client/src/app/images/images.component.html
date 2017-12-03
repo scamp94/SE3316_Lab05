@@ -1,4 +1,5 @@
 <div style="text-align:center">
+  <link rel = 'https://img.purch.com/rnb/330x227/aHR0cDovL3d3dy5zcGFjZS5jb20vaW1hZ2VzL2kvMDAwLzA2MC8wNzIvb3JpZ2luYWwvc2h1dHRlcnN0b2NrX3RlbGVzY29wZV9naXJsLmpwZw=='>
   <div class = 'navBar'>
     <a class ='active' href = '/search'>Search</a>
     <a href  = '/collections'> Collections</a>
@@ -11,24 +12,43 @@
     Welcome to NASA Image Search!
   </h1>
 </div>
-<br><br>
 
-<div id = 'search'>
-  <p id = 'searchTitle'>
-    Search for Images
+<div id = 'signInMsg' [hidden] = 'verified'>
+  <p style = 'text-align: center'>
+    Are you lost? You need to sign in to search NASA's awesome images.
   </p>
-  <form id = 'searchForm'>
-    <input id = 'imageSearch' name = 'searchInput' type = 'text'  [(ngModel)] = searchCriteria>
-    <br><br>
-    <button id = 'searchBtn' (click) = "searchImages()">Search</button>
-  </form>
-
-  <div>
-    <ul class = 'imageList'>
-      <li *ngFor = "let image of images">
-        <img src = {{image}}>
-      </li>
-    </ul>
-  </div>
 </div>
 
+
+<div id = 'searchPage' [hidden] = '!verified'>
+  <div id = 'search'>
+    <p id = 'searchTitle'>
+      Search for Images
+    </p>
+    <form id = 'searchForm'>
+      <input id = 'imageSearch' name = 'searchInput' type = 'text'  [(ngModel)] = searchCriteria>
+      <br><br>
+      <button id = 'searchBtn' (click) = "searchImages()">Search</button>
+    </form>
+
+    <div>
+      <ul class = 'imageList'>
+        <li *ngFor = "let image of images">
+          <button id = 'imageOptions' (click) = getCollections(img)>
+          <img src = {{image}}>
+          </button>
+        </li>
+      </ul>
+      <div id = 'addToCollection' class = 'modal'>
+        <div class = 'modal-content'>
+          <span class = "close"></span>
+          <select>
+            <option *ngFor = "let collection of collections">
+              {{collection.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

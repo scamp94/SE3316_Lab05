@@ -20,7 +20,7 @@ export class SignUpComponent implements OnInit {
   }
 
   createUser(){
-    this.signUpService.signUp(this.username, this.password, this.callBackFunction);
+    this.signUpService.signUp(this.username, this.password, this.callBackFunction.bind(this));
   }
 
   callBackFunction(res: string){
