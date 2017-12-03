@@ -247,8 +247,31 @@ router.post('/createCollection', function(req, res){
 });
 
 router.delete('/collection/:id', function(req, res){
-   Collection.find({_id: req.id})
+   Collection.remove({_id: req.params.id}, function(err){
+       if(err)
+           res.send(err);
+       else
+           res.send({message: 'Successfully deleted collection'});
+   })
 
+});
+
+router.delete('/collectionDeleteImg?:query', function(req, res){
+   Collection.find({_id: req.query.collection}, function(err, collection){
+       if(err)
+           res.send(err);
+
+       console.log(collection[0].image);
+       var img = req.query.image;
+       var i = collection[0].image.indexOf(img);
+       collection[0].image.splice(i, 1);
+
+       collection[0].save(function(err){
+           if(err)
+               res.send(err);
+           res.send({message:'Image removed'});
+       });
+   })
 });
 
 

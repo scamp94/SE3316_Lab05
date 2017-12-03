@@ -46,4 +46,12 @@ export class CollectionService {
     })
   }
 
+  deleteImg(img, collection){
+    this.http.delete('/api/collectionDeleteImg?collection='+collection+'&image='+img).subscribe(response=> {
+          console.log(response.json());
+      })
+    }
+
+
+
 }

@@ -21,6 +21,7 @@ export class CollectionComponent implements OnInit {
   //images in a selected collection
   images = [];
   selectedCollection;
+  selectedImg;
 
   constructor(private cookieService : CookieService, private collectionService: CollectionService) { }
 
@@ -49,6 +50,7 @@ export class CollectionComponent implements OnInit {
 
     //reset privacy value
     this.privacy = false;
+    document.getElementById('newCollection').style.display = 'none';
   }
 
   signOut(){
@@ -71,9 +73,9 @@ export class CollectionComponent implements OnInit {
   }
 
   viewCollection(collection){
+    this.selectedCollection = collection;
     this.images = collection.image;
-
-    document.getElementById('viewCollection').style.display = 'block';
+    document.getElementById('viewPersonalCollection').style.display = 'block';
   }
 
   deleteVerification(collection){
@@ -85,11 +87,27 @@ export class CollectionComponent implements OnInit {
     document.getElementById('deleteCollection').style.display = 'none';
     this.collectionService.deleteCollection(this.selectedCollection);
     this.selectedCollection = '';
+    window.location.reload();
   }
 
   noDelete(){
     document.getElementById('deleteCollection').style.display = 'none';
     this.selectedCollection = '';
+  }
+
+  removeImgVer(img){
+    this.selectedImg = img;
+    document.getElementById('deleteImg').style.display = 'block';
+  }
+
+  noDeleteImg(){
+    document.getElementById('deleteImg').style.display  = 'none';
+  }
+
+  yesDeleteImg(){
+    this.collectionService.deleteImg( this.selectedImg,this.selectedCollection._id);
+    this.selectedImg = '';
+    document.getElementById('deleteImg').style.display = 'none';
   }
 }
 

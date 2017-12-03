@@ -47,12 +47,14 @@
 </div>
 
 
-<div id = 'viewCollection' class = 'modal'>
+<div id = 'viewPersonalCollection' class = 'modal'>
   <div class = 'modal-content'>
     <span class = "close"></span>
     <ul>
       <li *ngFor = "let img of images">
-        <img src ={{img}}>
+        <button id = 'imageBtn' (click) = 'removeImgVer(img)'>
+          <img src ={{img}}>
+        </button>
       </li>
     </ul>
   </div>
@@ -61,8 +63,32 @@
 <div id = 'deleteCollection' class = 'modal'>
   <div class = 'modal-content'>
     <p>Are you sure you want to delete your lovely collection?</p>
-    <button id = 'yesDelete'>Yes.</button>
-    <button id = 'noCancel'>No.</button>
+    <button id = 'yesDelete' (click) = 'yesDelete()'>Yes.</button>
+    <button id = 'noCancel' (click) = 'noDelete()'>No.</button>
   </div>
 </div>
+
+<div id = 'deleteImg' class = 'modal'>
+  <div class = 'modal-content'>
+    <p>Are you sure you want to delete this lovely image?</p>
+    <button id = 'dltImg' (click) = 'yesDeleteImg()'>Yes.</button>
+    <button id = 'cancelImg' (click) = 'noDeleteImg()'>No.</button>
+  </div>
+</div>
+
+<div id = 'editCollection' class = 'modal'>
+  <div class  = 'modal-content'>
+    <input type = 'text' id = 'editCollectionName' placeholder="Collection Name" title = 'name' [(ngModel)] = 'collectionName'>
+    <br><br>
+    <input type = 'text' id = 'editCollectionDescription' placeholder = 'Enter a Brief Description' name = 'descr' [(ngModel)] ='collectionDescription'>
+    <br><br>
+    <select name = 'security'  [(ngModel)] = 'privVal'>
+      <option value = '' disabled selected>Select Privacy Level</option>
+      <option value = 'private'>Private</option>
+      <option value = 'public'>Public</option>
+    </select>
+    <input type = 'submit' (click) = editCollection() value = 'Create'>
+  </div>
+</div>
+
 
