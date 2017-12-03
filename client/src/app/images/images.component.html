@@ -21,6 +21,7 @@
 
 
 <div id = 'searchPage' [hidden] = '!verified'>
+
   <div id = 'search'>
     <p id = 'searchTitle'>
       Search for Images
@@ -30,25 +31,39 @@
       <br><br>
       <button id = 'searchBtn' (click) = "searchImages()">Search</button>
     </form>
+  </div>
 
-    <div>
-      <ul class = 'imageList'>
-        <li *ngFor = "let image of images">
-          <button id = 'imageOptions' (click) = getCollections(img)>
+  <div>
+    <ul class = 'imageList'>
+      <li *ngFor = "let image of images">
+        <button id = 'imageOptions' (click) = getCollections(image)>
           <img src = {{image}}>
-          </button>
-        </li>
-      </ul>
-      <div id = 'addToCollection' class = 'modal'>
-        <div class = 'modal-content'>
-          <span class = "close"></span>
-          <select>
-            <option *ngFor = "let collection of collections">
-              {{collection.name}}
-            </option>
-          </select>
-        </div>
-      </div>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <div id = 'addToCollection' class = 'modal'>
+    <div class = 'modal-content'>
+      <span class = "close"></span>
+      <p>Select the collection you'd like to add your image to:</p>
+      <select title ='sectionForm' name = 'selectCollection' [(ngModel)] = 'selectedCollection'>
+        <option value = ' ' disabled selected>Select Collection</option>
+        <option *ngFor = "let collection of collections">
+          {{collection.name}}
+        </option>
+      </select>
+      <input type = 'submit' (click) = addToCollection() value = 'Add'>
     </div>
   </div>
+
+  <div id = 'successAdd' class = modal>
+    <div class = 'modal-content'>
+      <p>
+        {{AddSuccessMsg}}
+      </p>
+      <button id = 'close' (click) = closeModal()>THANKS!</button>
+    </div>
+  </div>
+
 </div>

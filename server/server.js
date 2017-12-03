@@ -210,8 +210,26 @@ router.get('/search/', function(req, res){
 
 //routing for database
 router.get('/collections', function(req,res){
-    Collection.find()
+    Collection.find({owner: req.header('owner')}, function(err, collections){
+        console.log(req.header('owner'));
+        if(err)
+            res.send(err);
+        res.json(collections);
+    })
 
+});
+
+router.post('/addToCollection', function(req, res){
+   Collection.find({owner: req.body.owner, name: req.body.name}, function(err, collection){
+       console.log(req.body.name);
+       console.log(collection);
+       collection[0].image.push(req.body.image);
+       collection[0].save(function(err){
+           if(err)
+               res.send(err);
+           res.json({message: 'Good Choice! The image has been added to your collection'});
+       })
+   })
 });
 
 router.post('/createCollection', function(req, res){

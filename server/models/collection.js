@@ -5,7 +5,7 @@ var CollectionSchema = new Schema({
     //true is private, false is not private
     privacy: Boolean,
     owner: String,
-    image: [],
+    image: [{type:String}],
     name: String,
     description: String,
     rating: Number
