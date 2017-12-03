@@ -12,7 +12,7 @@ import {CookieService} from 'ngx-cookie-service';
 export class SignUpComponent implements OnInit {
   username = '';
   password = '';
-
+  signUpMsg = '';
 
   constructor(private signUpService: SignUpService, private cookieService: CookieService) { }
 
@@ -24,7 +24,10 @@ export class SignUpComponent implements OnInit {
   }
 
   callBackFunction(res: string){
-    console.log(res);
+    console.log(JSON.parse(JSON.stringify(res))._body);
+    if(JSON.parse(JSON.stringify(res))._body){
+      this.signUpMsg = JSON.parse(JSON.parse(JSON.stringify(res))._body).msg;
+    }
   }
 
   signOut(){

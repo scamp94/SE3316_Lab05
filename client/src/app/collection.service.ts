@@ -1,5 +1,5 @@
 import {Injectable, NgModule} from '@angular/core';
-import {Headers, Http} from '@angular/http';
+import {Headers, Http, RequestOptions} from '@angular/http';
 import {CookieService} from 'ngx-cookie-service';
 
 
@@ -24,6 +24,25 @@ export class CollectionService {
 
     }).catch(function(){
       console.log('error');
+    })
+  }
+
+  getPersonalCollection(callBackFunction){
+    let headers = new Headers();
+    headers.append('owner', this.cookieService.get('verified'));
+
+    console.log(headers);
+    let options = new RequestOptions({ headers: headers});
+
+    this.http.get('/api/collections', options)
+      .subscribe(response => {
+        callBackFunction(response.json())
+      });
+  }
+
+  deleteCollection(collection){
+    this.http.delete('/api/collection/'+collection._id).subscribe(response =>{
+      console.log(response.json());
     })
   }
 

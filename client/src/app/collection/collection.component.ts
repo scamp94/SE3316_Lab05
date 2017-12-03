@@ -16,18 +16,27 @@ export class CollectionComponent implements OnInit {
   privacy = false;
   verified: boolean;
   privVal = '';
+  personalCollection = [];
+
+  //images in a selected collection
+  images = [];
+  selectedCollection;
 
   constructor(private cookieService : CookieService, private collectionService: CollectionService) { }
 
   ngOnInit() {
-    this.verified = false;
+    if(this.cookieService.get('verified') === 'false')
+      this.verified = false;
+    else
+      this.verified = true;
+    this.getPersonalCollections();
   }
 
   showCreateCollection(){
       if(this.cookieService.get('verified') === 'false'){
         this.errorMsg = 'Please login or create an account to create a collection.';
       }else{
-        this.verified = true;
+        document.getElementById('newCollection').style.display = 'block';
       }
   }
 
@@ -42,15 +51,45 @@ export class CollectionComponent implements OnInit {
     this.privacy = false;
   }
 
-  callBackFunction(res: string){
-
-  }
-
   signOut(){
     this.cookieService.set('verified', 'false');
     window.location.reload();
     this.verified = false;
   }
 
+  getPersonalCollections(){
+    this.collectionService.getPersonalCollection(this.callBackFunction.bind(this));
+  }
+
+
+  callBackFunction(res: JSON[]){
+    for (let i = 0; i < res.length; i++){
+      this.personalCollection.push(res[i]);
+    }
+
+    console.log(this.personalCollection);
+  }
+
+  viewCollection(collection){
+    this.images = collection.image;
+
+    document.getElementById('viewCollection').style.display = 'block';
+  }
+
+  deleteVerification(collection){
+    document.getElementById('deleteCollection').style.display = 'block';
+    this.selectedCollection = collection;
+  }
+
+  yesDelete(){
+    document.getElementById('deleteCollection').style.display = 'none';
+    this.collectionService.deleteCollection(this.selectedCollection);
+    this.selectedCollection = '';
+  }
+
+  noDelete(){
+    document.getElementById('deleteCollection').style.display = 'none';
+    this.selectedCollection = '';
+  }
 }
 

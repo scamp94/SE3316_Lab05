@@ -13,18 +13,15 @@ export class SignUpService {
   constructor(private http: Http) { }
 
   signUp(email: string, password :string, callBackFunction){
-    fetch('/api/signUp',{
-      method: 'post',
-      headers: {'Content-type':'application/json'},
-      body: JSON.stringify({email: email,  password: password, type: 'register'})
-
-    }).then(function(response){
+    this.http.post('/api/signUp',{
+      email: email,
+      password: password,
+      type: 'register'
+    }).subscribe(function(response){
       console.log(response);
-      callBackFunction(response['msg']);
-
-    }).catch(function(){
-      console.log('error');
+      callBackFunction(response);
     })
+
     }
   }
 

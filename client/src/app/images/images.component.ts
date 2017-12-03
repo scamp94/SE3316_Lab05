@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModule} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {ImagesService} from '../images.service'
 import {CookieService} from 'ngx-cookie-service';
 
@@ -89,6 +89,12 @@ export class ImagesComponent implements OnInit {
 
   closeModal(){
     document.getElementById('successAdd').style.display = 'none';
+  }
+
+  cancelSelection(){
+    document.getElementById('addToCollection').style.display = 'none';
+    this.selectedImage = '';
+    this.collections = [];
   }
 
 }

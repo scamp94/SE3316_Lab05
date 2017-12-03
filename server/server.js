@@ -216,7 +216,6 @@ router.get('/collections', function(req,res){
             res.send(err);
         res.json(collections);
     })
-
 });
 
 router.post('/addToCollection', function(req, res){
@@ -246,6 +245,13 @@ router.post('/createCollection', function(req, res){
         res.json({message: 'Collection created!'});
     })
 });
+
+router.delete('/collection/:id', function(req, res){
+   Collection.find({_id: req.id})
+
+});
+
+
 
 //check login credentials
 router.get('/login?:query', function (req, res){
