@@ -19,10 +19,12 @@ export class SignUpComponent implements OnInit {
   ngOnInit() {
   }
 
+  //send request to create a new user
   createUser(){
     this.signUpService.signUp(this.username, this.password, this.callBackFunction.bind(this));
   }
 
+  //display message received from server
   callBackFunction(res: string){
     console.log(JSON.parse(JSON.stringify(res))._body);
     if(JSON.parse(JSON.stringify(res))._body){
@@ -30,6 +32,7 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  //if sign out clicked update cookie
   signOut(){
     this.cookieService.set('verified', 'false');
   }

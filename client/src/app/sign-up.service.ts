@@ -12,6 +12,7 @@ export class SignUpService {
 
   constructor(private http: Http) { }
 
+  //send account information to server
   signUp(email: string, password :string, callBackFunction){
     this.http.post('/api/signUp',{
       email: email,

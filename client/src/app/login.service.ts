@@ -11,10 +11,9 @@ import {CookieService} from 'ngx-cookie-service';
 
 @Injectable()
 export class LoginService {
-  constructor(private http: Http, private cookieService: CookieService) {
+  constructor(private http: Http, private cookieService: CookieService) {}
 
-  }
-
+  //verify email and password
   verify(email, password, callBackFunction) {
     let headers = new Headers();
     headers.append('authentication', this.cookieService.get('verified'));

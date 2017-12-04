@@ -1,11 +1,17 @@
-
+//express and mongoose ReST API
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
 var mongoose = require('mongoose');
+
+//for sanitization
 var validator = require('validator');
+
+//email verification
 var nev = require('email-verification')(mongoose);
+
+//for hashin
 var bcrypt = require ('bcrypt');
 
 //database models
@@ -87,6 +93,7 @@ nev.generateTempUserModel(users, function(err, tempUserModel) {
     console.log('generated temp user model: ' + (typeof tempUserModel === 'function'));
 });
 
+//create a user account
 router.post('/signUp', function(req, res) {
     console.log('post data received');
     var email = validator.escape(req.body.email);
@@ -189,6 +196,7 @@ router.get('/email-verification/:URL', function(req, res) {
 
 
 //routing for nasa
+//get search with criteria
 router.get('/search/:key', function(req, res) {
     request({
         uri: "https://images-api.nasa.gov/search?q="+validator.escape(req.params.key)+"&media_type=image",
@@ -198,6 +206,7 @@ router.get('/search/:key', function(req, res) {
     });
 });
 
+//get plain search
 router.get('/search/', function(req, res){
     request({
         uri: "https://images-api.nasa.gov/search?media_type=image",
@@ -207,7 +216,9 @@ router.get('/search/', function(req, res){
     });
 });
 
-//routing for database
+//routing collections
+
+//get all public collections
 router.route('/PublicCollections')
     .get(function(req,res){
        Collection.find({privacy: false}, function(err, collections){
@@ -218,6 +229,7 @@ router.route('/PublicCollections')
     });
 
 router.route('/collections')
+    //get all collections for a user
     .get( function(req,res){
         Collection.find({owner: req.header('owner')}, function(err, collections){
             console.log(req.header('owner'));
@@ -231,7 +243,7 @@ router.route('/collections')
     .post(function(req, res){
         var collection = new Collection();
         collection.name = validator.escape(req.body.name);
-        collection.privacy = validator.escape(req.body.privacy);
+        collection.privacy = req.body.privacy;
         collection.owner = req.body.owner;
         collection.description = validator.escape(req.body.description);
 
@@ -244,6 +256,8 @@ router.route('/collections')
     });
 
 router.route('/editCollection/:id')
+
+    //delete an existing collection
     .delete(function(req, res){
         console.log('deleting');
         Collection.remove({_id: req.params.id}, function(err){

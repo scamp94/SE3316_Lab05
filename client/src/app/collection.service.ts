@@ -6,12 +6,9 @@ import {CookieService} from 'ngx-cookie-service';
 @Injectable()
 export class CollectionService {
 
-  errorMsg: String;
+  constructor(private http :Http, private cookieService : CookieService ) {}
 
-  constructor(private http :Http, private cookieService : CookieService ) {
-
-  }
-
+  //create a new collection given collection information
   createNewCollection(name, privacy, description){
     this.http.post('/api/collections',{
       name: name,  privacy: privacy,description: description,
@@ -21,6 +18,7 @@ export class CollectionService {
     });
   }
 
+  //get all collections owned by the user
   getPersonalCollection(callBackFunction){
     let headers = new Headers();
     headers.append('owner', this.cookieService.get('verified'));
@@ -34,6 +32,7 @@ export class CollectionService {
       });
   }
 
+  //get all collections marked as public
   getPublicCollection(callBackFunction){
     this.http.get('/api/PublicCollections')
       .subscribe(response => {
@@ -41,18 +40,21 @@ export class CollectionService {
       });
   }
 
+  //delete one of the user collections
   deleteCollection(collection){
     this.http.delete('/api/editCollection/'+collection._id).subscribe(response =>{
       console.log(response.json());
     })
   }
 
+  //delete an image from the user's collection
   deleteImg(img, collection){
     this.http.delete('/api/collectionDeleteImg?collection='+collection+'&image='+img).subscribe(response=> {
           console.log(response.json());
       })
     }
 
+  //update a collections information
   updateInfo(name, description, privacy, collection){
     this.http.post('/api/editCollection/'+collection._id, {
       name: name,

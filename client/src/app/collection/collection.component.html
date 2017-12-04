@@ -64,11 +64,13 @@
 
 <div id  = 'viewPublicCollection' class = 'modal'>
   <div class = 'modal-contentt'>
+    <button (click) = closePublicCollection()>Close</button>
     <ul>
       <li *ngFor = "let img of images">
         <button id = 'publicImageBtn' (click) = 'viewImg(img)'>
           <img src ={{img}}>
         </button>
+
       </li>
     </ul>
   </div>
@@ -76,11 +78,13 @@
 
 <div id = 'viewPersonalCollection' class = 'modal'>
   <div class = 'modal-content'>
+    <button (click) = closePrivateCollection()>Close</button>
     <ul>
       <li *ngFor = "let img of images">
         <button id = 'imageBtn' (click) = 'removeImgVer(img)'>
           <img src ={{img}}>
         </button>
+
       </li>
     </ul>
   </div>
