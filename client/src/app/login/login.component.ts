@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   email:'';
   password: '';
   loginMsg: String;
+  verificationBtn = false;
 
 
   constructor(private loginService: LoginService, private cookieService: CookieService) { }
@@ -25,7 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   callBackFunction(res : string){
-     if(JSON.parse(JSON.stringify(res)).message){
+    if(JSON.parse(JSON.stringify(res)).message){
       this.loginMsg = JSON.parse(JSON.stringify(res)).message;
     }
     else{

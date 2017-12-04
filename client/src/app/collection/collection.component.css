@@ -35,7 +35,15 @@
   width: 50%;
 }
 
-#personalCollection{
+#editCollectionDescription{
+  width: 50%;
+}
+
+#editCollection{
+  text-align: center;
+}
+
+.collectionTitle{
   font-size: 24px;
   color: rebeccapurple;
 }

@@ -12,19 +12,13 @@ export class CollectionService {
 
   }
 
-  createNewCollection(name, privacy, description, callBackFunction){
-    fetch('/api/createCollection',{
-      method: 'post',
-      headers: {'Content-type':'application/json'},
-      body: JSON.stringify({name: name,  privacy: privacy,description: description, owner: this.cookieService.get('verified')})
-
-    }).then(function(response){
+  createNewCollection(name, privacy, description){
+    this.http.post('/api/collections',{
+      name: name,  privacy: privacy,description: description,
+      owner: this.cookieService.get('verified')
+    }).subscribe(function(response) {
       console.log(response);
-      callBackFunction(response.json());
-
-    }).catch(function(){
-      console.log('error');
-    })
+    });
   }
 
   getPersonalCollection(callBackFunction){
@@ -40,8 +34,15 @@ export class CollectionService {
       });
   }
 
+  getPublicCollection(callBackFunction){
+    this.http.get('/api/PublicCollections')
+      .subscribe(response => {
+        callBackFunction(response.json())
+      });
+  }
+
   deleteCollection(collection){
-    this.http.delete('/api/collection/'+collection._id).subscribe(response =>{
+    this.http.delete('/api/editCollection/'+collection._id).subscribe(response =>{
       console.log(response.json());
     })
   }
@@ -52,6 +53,13 @@ export class CollectionService {
       })
     }
 
-
-
+  updateInfo(name, description, privacy, collection){
+    this.http.post('/api/editCollection/'+collection._id, {
+      name: name,
+      description: description,
+      privacy: privacy
+    }).subscribe(function(response){
+      console.log(response);
+    })
+  }
 }

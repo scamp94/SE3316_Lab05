@@ -4,7 +4,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var request = require('request');
 var mongoose = require('mongoose');
-
+var validator = require('validator');
 var nev = require('email-verification')(mongoose);
 var bcrypt = require ('bcrypt');
 
@@ -89,8 +89,8 @@ nev.generateTempUserModel(users, function(err, tempUserModel) {
 
 router.post('/signUp', function(req, res) {
     console.log('post data received');
-    var email = req.body.email;
-    var password = req.body.password;
+    var email = validator.escape(req.body.email);
+    var password = validator.escape(req.body.password);
 
     //hash password
 
@@ -175,10 +175,9 @@ router.get('/email-verification/:URL', function(req, res) {
                 }
                 else {
                     console.log('confirmed');
-                    res.json({
-                        msg: 'CONFIRMED!',
-                        info: info
-                    });
+                    res.send(
+                        'Your account has been confirmed! Go browse some images that are OUT OF THIS WORLD'
+                    );
                 }
             });
         } else {
@@ -192,7 +191,7 @@ router.get('/email-verification/:URL', function(req, res) {
 //routing for nasa
 router.get('/search/:key', function(req, res) {
     request({
-        uri: "https://images-api.nasa.gov/search?q="+req.params.key+"&media_type=image",
+        uri: "https://images-api.nasa.gov/search?q="+validator.escape(req.params.key)+"&media_type=image",
         method: 'get'
     }, function(error, message){
         res.json(message);
@@ -209,15 +208,70 @@ router.get('/search/', function(req, res){
 });
 
 //routing for database
-router.get('/collections', function(req,res){
-    Collection.find({owner: req.header('owner')}, function(err, collections){
-        console.log(req.header('owner'));
-        if(err)
-            res.send(err);
-        res.json(collections);
-    })
-});
+router.route('/PublicCollections')
+    .get(function(req,res){
+       Collection.find({privacy: false}, function(err, collections){
+           if(err)
+               res.send(err);
+           res.json(collections);
+       })
+    });
 
+router.route('/collections')
+    .get( function(req,res){
+        Collection.find({owner: req.header('owner')}, function(err, collections){
+            console.log(req.header('owner'));
+            if(err)
+                res.send(err);
+            res.json(collections);
+        })
+    })
+
+    //create new collection
+    .post(function(req, res){
+        var collection = new Collection();
+        collection.name = validator.escape(req.body.name);
+        collection.privacy = validator.escape(req.body.privacy);
+        collection.owner = req.body.owner;
+        collection.description = validator.escape(req.body.description);
+
+        collection.save(function(err){
+            if(err)
+                res.send(err);
+
+            res.json({message: 'Collection created!'});
+        })
+    });
+
+router.route('/editCollection/:id')
+    .delete(function(req, res){
+        console.log('deleting');
+        Collection.remove({_id: req.params.id}, function(err){
+            if(err)
+                res.send(err);
+            else
+                res.send({message: 'Successfully deleted collection'});
+        })
+    })
+
+    //edit existing collection information
+    .post(function(req,res){
+        Collection.find({_id: req.params.id}, function(err, collection){
+            collection[0].name = validator.escape(req.body.name);
+            collection[0].description = validator.escape(req.body.description);
+            collection[0].privacy = req.body.privacy;
+
+            console.log(req.body.privacy);
+            collection[0].save(function(err){
+                if(err)
+                    res.send(err);
+                else
+                    res.send({message: 'Collection update'});
+            })
+        })
+    });
+
+//add image to collection
 router.post('/addToCollection', function(req, res){
    Collection.find({owner: req.body.owner, name: req.body.name}, function(err, collection){
        console.log(req.body.name);
@@ -231,31 +285,8 @@ router.post('/addToCollection', function(req, res){
    })
 });
 
-router.post('/createCollection', function(req, res){
-    var collection = new Collection();
-    collection.name = req.body.name;
-    collection.privacy = req.body.privacy;
-    collection.owner = req.body.owner;
-    collection.description = req.body.description;
 
-    collection.save(function(err){
-        if(err)
-            res.send(err);
-
-        res.json({message: 'Collection created!'});
-    })
-});
-
-router.delete('/collection/:id', function(req, res){
-   Collection.remove({_id: req.params.id}, function(err){
-       if(err)
-           res.send(err);
-       else
-           res.send({message: 'Successfully deleted collection'});
-   })
-
-});
-
+//delete image from collection
 router.delete('/collectionDeleteImg?:query', function(req, res){
    Collection.find({_id: req.query.collection}, function(err, collection){
        if(err)
@@ -278,25 +309,22 @@ router.delete('/collectionDeleteImg?:query', function(req, res){
 
 //check login credentials
 router.get('/login?:query', function (req, res){
-
     if(req.header('authentication') === 'false') {
-        users.find({"email": req.query.email}, function (err, userList) {
+        users.find({"email": validator.escape(req.query.email)}, function (err, userList) {
             if (err)
                 res.send(err);
 
             //check password
-            bcrypt.compare(req.query.password, userList[0].password, function(err, result){
-            if(result === true)
-                res.send(userList);
-            else
-                res.send({message: 'Incorrect Username or Password'});
+            bcrypt.compare(validator.escape(req.query.password), userList[0].password, function(err, result){
+                if(result === true)
+                    res.send(userList);
+                else
+                    res.send({message: 'Incorrect Username or Password'});
             });
         })
     }else{
         res.send({message: 'You are already signed in!'});
     }
-
-
 });
 
 //page routing

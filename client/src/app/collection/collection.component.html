@@ -26,13 +26,14 @@
         <option value = 'public'>Public</option>
       </select>
       <input type = 'submit' (click) = createCollection() value = 'Create'>
+      <button (click) = 'closeCreate()'> Cancel </button>
     </div>
   </div>
 
 </div>
 
 <div id = 'personalCollectionList' [hidden] = '!verified'>
-  <p id = 'personalCollection'>Your Collections: </p>
+  <p id = 'personalCollection' class = 'collectionTitle'>Your Collections: </p>
   <ul>
     <li *ngFor = "let pCollection of personalCollection">
       <button id = 'collectionBtn' (click) = 'viewCollection(pCollection)'>
@@ -40,16 +41,41 @@
         <br>
         <img src = {{pCollection.image[0]}} style="width:150px;height:150px">
       </button>
-      <button id = 'editBtn'>Edit</button>
+      <button id = 'editBtn' (click) = 'displayEditInfo(pCollection)'>Edit</button>
       <button id = 'dltBtn' (click) = 'deleteVerification(pCollection)'>Delete</button>
     </li>
   </ul>
 </div>
 
+<div id = 'publicCollections' class = 'collectionTitle'>
+  <p id = publicCollectionsTitle>
+    Public Collections:
+  </p>
+  <ul>
+    <li *ngFor = "let collection of publicCollection">
+      <button id = 'publicCollectionBtn' (click) = 'viewPublicCollection(collection)'>
+        {{collection.name}}: {{collection.description}}
+        <br>
+        <img src = {{collection.image[0]}} style="width:150px;height:150px">
+      </button>
+    </li>
+  </ul>
+</div>
+
+<div id  = 'viewPublicCollection' class = 'modal'>
+  <div class = 'modal-contentt'>
+    <ul>
+      <li *ngFor = "let img of images">
+        <button id = 'publicImageBtn' (click) = 'viewImg(img)'>
+          <img src ={{img}}>
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
 
 <div id = 'viewPersonalCollection' class = 'modal'>
   <div class = 'modal-content'>
-    <span class = "close"></span>
     <ul>
       <li *ngFor = "let img of images">
         <button id = 'imageBtn' (click) = 'removeImgVer(img)'>
@@ -57,6 +83,14 @@
         </button>
       </li>
     </ul>
+  </div>
+</div>
+
+<div id = 'viewPublicImage' class = 'modal'>
+  <div class = 'modal-content'>
+    <img src = {{selectedImg}}>
+    <br>
+    <button (click) = closeImgView()>Close</button>
   </div>
 </div>
 
@@ -87,7 +121,8 @@
       <option value = 'private'>Private</option>
       <option value = 'public'>Public</option>
     </select>
-    <input type = 'submit' (click) = editCollection() value = 'Create'>
+    <input type = 'submit' (click) = 'editCollection()' value = 'Change'>
+    <button (click) = 'closeEdit()'> Cancel </button>
   </div>
 </div>
 

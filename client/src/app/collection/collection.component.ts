@@ -12,11 +12,18 @@ import {CollectionService} from '../collection.service';
 export class CollectionComponent implements OnInit {
   errorMsg:String;
   collectionName = '';
-  collectionDescription = ''
-  privacy = false;
+  collectionDescription = '';
+
+  //default privacy setting is private
+  privacy = true;
   verified: boolean;
   privVal = '';
+
+  //collection shown for those signed in
   personalCollection = [];
+
+  //public collections for everyone
+  publicCollection = [];
 
   //images in a selected collection
   images = [];
@@ -31,7 +38,21 @@ export class CollectionComponent implements OnInit {
     else
       this.verified = true;
     this.getPersonalCollections();
+    this.getPublicCollections();
   }
+
+  getPublicCollections(){
+    this.collectionService.getPublicCollection(this.callPublicBackFunction.bind(this));
+  }
+
+  callPublicBackFunction(res: JSON[]){
+    for (let i = 0; i < res.length; i++){
+      this.publicCollection.push(res[i]);
+    }
+  }
+
+
+
 
   showCreateCollection(){
       if(this.cookieService.get('verified') === 'false'){
@@ -41,15 +62,22 @@ export class CollectionComponent implements OnInit {
       }
   }
 
+
   createCollection(){
 
-    if(this.privVal === 'private')
-      this.privacy = true;
+    //default privacy value is private
+    if(this.privVal === 'public')
+      this.privacy = false;
 
-    this.collectionService.createNewCollection(this.collectionName, this.privacy, this.collectionDescription, this.callBackFunction);
+    this.collectionService.createNewCollection(this.collectionName, this.privacy, this.collectionDescription);
 
     //reset privacy value
-    this.privacy = false;
+    this.privacy = true;
+    this.closeCreate();
+    window.location.reload();
+  }
+
+  closeCreate(){
     document.getElementById('newCollection').style.display = 'none';
   }
 
@@ -60,23 +88,38 @@ export class CollectionComponent implements OnInit {
   }
 
   getPersonalCollections(){
-    this.collectionService.getPersonalCollection(this.callBackFunction.bind(this));
+    this.collectionService.getPersonalCollection(this.callPersonalBackFunction.bind(this));
   }
 
-
-  callBackFunction(res: JSON[]){
+  callPersonalBackFunction(res: JSON[]){
     for (let i = 0; i < res.length; i++){
       this.personalCollection.push(res[i]);
     }
-
-    console.log(this.personalCollection);
   }
+
 
   viewCollection(collection){
     this.selectedCollection = collection;
     this.images = collection.image;
     document.getElementById('viewPersonalCollection').style.display = 'block';
   }
+
+  viewPublicCollection(collection){
+    this.selectedCollection = collection;
+    this.images = collection.image;
+    document.getElementById('viewPublicCollection').style.display = 'block';
+  }
+
+  viewImg(image){
+    this.selectedImg = image;
+    document.getElementById('viewPublicImage').style.display = 'block';
+  }
+
+  closeImgView(){
+    this.selectedImg = '';
+    document.getElementById('viewPublicImage').style.display = 'none';
+  }
+
 
   deleteVerification(collection){
     document.getElementById('deleteCollection').style.display = 'block';
@@ -107,7 +150,38 @@ export class CollectionComponent implements OnInit {
   yesDeleteImg(){
     this.collectionService.deleteImg( this.selectedImg,this.selectedCollection._id);
     this.selectedImg = '';
-    document.getElementById('deleteImg').style.display = 'none';
+    this.noDeleteImg();
+    window.location.reload();
+  }
+
+  displayEditInfo(pCollection){
+    this.selectedCollection = pCollection;
+    this.collectionName = pCollection.name;
+    this.collectionDescription = pCollection.description;
+
+    if(pCollection.privacy === true){
+      this.privVal = 'private';
+    }else
+      this.privVal = 'public';
+
+    document.getElementById('editCollection').style.display = 'block';
+  }
+
+  closeEdit(){
+    document.getElementById('editCollection').style.display = 'none';
+  }
+
+  editCollection(){
+    console.log(this.privVal);
+
+    let privacy = true;
+
+    if(this.privVal === 'public')
+      privacy = false;
+
+    this.collectionService.updateInfo(this.collectionName, this.collectionDescription, privacy, this.selectedCollection);
+    this.closeEdit();
+    window.location.reload();
   }
 }
 
